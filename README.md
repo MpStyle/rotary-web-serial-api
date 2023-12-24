@@ -9,7 +9,9 @@ The integration of Web Serial API facilitates a seamless connection between the 
 ## Hardware Components
 
 - ESP32 Wroom Board
+![images](imgs/esp32-wroom.png)
 - Rotary Encoder
+![images](imgs/rotary-encoder.png)
 - Jumper Wire Cable (F2F)
 - Micro USB Cable (Power and Data)
 - PC or Mac
