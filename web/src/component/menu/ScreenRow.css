@@ -1,0 +1,17 @@
+.screen-row{
+    padding: 1px;
+    margin: 0.5px;
+    background-color: #2D9CF5;
+    color: #1359BB;
+    line-height: 28px;
+}
+
+.screen-row *{
+    font-size: 20px;
+}
+
+.screen-row-selected{
+    background-color: #1359BB;
+    color: #2D9CF5;
+    padding: 1px 0px;
+}
