@@ -10,8 +10,7 @@
                 },
                 {
                     "code": "set-point",
-                    "parameterName": "setPoint",
-                    "editable": true
+                    "parameterName": "setPoint"
                 }
             ]
         },
@@ -40,14 +39,16 @@
                     "code": "alarm-temp",
                     "children": [
                         {
+                            "code": "alarm-temp-enabled",
+                            "parameterName": "alarmTempEnabled"
+                        },
+                        {
                             "code": "alarm-temp-min",
-                            "parameterName": "alarmTempMin",
-                            "editable": true
+                            "parameterName": "alarmTempMin"
                         },
                         {
                             "code": "alarm-temp-max",
-                            "parameterName": "alarmTempMax",
-                            "editable": true
+                            "parameterName": "alarmTempMax"
                         }
                     ]
                 },

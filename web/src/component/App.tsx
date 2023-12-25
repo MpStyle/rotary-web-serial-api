@@ -1,4 +1,4 @@
-import {FunctionComponent, useState} from 'react';
+import {FunctionComponent, useEffect, useState} from 'react';
 import {createHashRouter, RouterProvider} from 'react-router-dom';
 import {Command, CommandCode} from '../entity/Command';
 import {MenuProxy} from './menu/MenuProxy';
@@ -7,8 +7,22 @@ import {ParameterProvider} from "../book/ParameterProvider";
 
 export const App: FunctionComponent = () => {
     const [serialPort, setState] = useState<SerialPort | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<any | null>(null);
     const [command, setCommand] = useState<Command | undefined>(undefined);
+
+    useEffect(() => {
+        let timeout: any;
+
+        if (error) {
+            timeout = setTimeout(() => {
+                setError(null);
+            }, 5000);
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [error]);
 
     const connect = async () => {
         try {
@@ -48,12 +62,12 @@ export const App: FunctionComponent = () => {
                         }
                     }
                 } catch (error) {
-                    setError(error as string);
+                    setError(error);
                 }
             }
         } catch (error) {
             console.log(error);
-            setError(error as string);
+            setError(error);
         }
     }
 
@@ -66,7 +80,7 @@ export const App: FunctionComponent = () => {
 
     return <div className="app">
         {!serialPort && <button onClick={() => connect()} className="connect-controller">Connect controller</button>}
-        {error && <div style={{backgroundColor: 'red', color: 'white', fontWeight: 'bold'}}>{error}</div>}
+        <div className={`error ${error ? 'visible' : 'hidden'}`}>{error ? JSON.stringify(error) : ''}</div>
         <ParameterProvider>
             <div className="screen">
                 <RouterProvider router={router}/>
