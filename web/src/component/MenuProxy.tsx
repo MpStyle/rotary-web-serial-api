@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { MenuItem } from "../../entity/MenuItem";
+import { MenuItem } from "../entity/MenuItem";
 import { useLocation } from "react-router-dom";
-import { MenuScreen } from "./MenuScreen";
-import { Command } from "../../entity/Command";
+import { MenuScreen } from "./menu/MenuScreen";
+import { Command } from "../entity/Command";
 
 const findMenuItemByPath = (root: MenuItem | undefined, path: string[]): MenuItem | undefined => {
     let currentMenu: MenuItem | undefined = root;

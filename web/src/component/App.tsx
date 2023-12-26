@@ -1,7 +1,7 @@
 import {FunctionComponent, useEffect, useState} from 'react';
 import {createHashRouter, RouterProvider} from 'react-router-dom';
 import {Command, CommandCode} from '../entity/Command';
-import {MenuProxy} from './menu/MenuProxy';
+import {MenuProxy} from './MenuProxy';
 import "./App.css";
 import {ParameterProvider} from "../book/ParameterProvider";
 
