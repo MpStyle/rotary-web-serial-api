@@ -6,12 +6,18 @@ The board is connected to a PC via USB, enabling communication between the ESP32
 Through the browser, users can read the transmitted bytes and interact with a web interface. This interactive web interface allows users to control and respond to the data sent by the ESP32. \
 The integration of Web Serial API facilitates a seamless connection between the microcontroller and the browser, providing a practical demonstration of utilizing this web technology for real-time communication with embedded systems.
 
+## Web UI
+
+![Web UI](imgs/web-ui.gif)
+
+The web interface is navigable using the keyboard, mouse, or rotary encoder.
+
 ## Hardware Components
 
 - ESP32 Wroom Board
-![images](imgs/esp32-wroom.png)
+![Esp32 Wroom](imgs/esp32-wroom.png)
 - Rotary Encoder
-![images](imgs/rotary-encoder.png)
+![Rotary encoder](imgs/rotary-encoder.png)
 - Jumper Wire Cable (F2F)
 - Micro USB Cable (Power and Data)
 - PC or Mac
