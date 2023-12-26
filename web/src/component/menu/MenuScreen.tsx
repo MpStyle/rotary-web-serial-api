@@ -29,6 +29,12 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
         });
     }
 
+    const handleGoBack=()=>{
+        const newParentCodes = [...props.path];
+        newParentCodes.pop();
+        navigate(newParentCodes.join("/"));
+    }
+
     const handleChildMenuClick = () => {
         if (selectedChild < menuItem.children.length) {
             const selectedChildren = menuItem.children[selectedChild];
@@ -38,14 +44,11 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
 
             navigate([...path, menuItem.children[selectedChild].code].join("/"))
         } else { // go back
-            const newParentCodes = [...props.path];
-            newParentCodes.pop();
-            navigate(newParentCodes.join("/"));
+            handleGoBack();
         }
     }
 
     const handleKeyPress = (event: KeyboardEvent) => {
-        console.log(event.key);
         switch (event.key) {
             case "Enter":
             case "ArrowRight":
@@ -56,6 +59,9 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
                 break;
             case "ArrowDown":
                 handleChildMenuNavigation(commandBuilder(CommandCode.Right));
+                break;
+            case "ArrowLeft":
+                handleGoBack();
                 break;
         }
     };
