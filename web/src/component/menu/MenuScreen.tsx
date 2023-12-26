@@ -1,7 +1,7 @@
 import {FunctionComponent, useEffect, useState} from "react";
 import {MenuItem} from "../../entity/MenuItem";
 import {useNavigate} from "react-router-dom";
-import {Command, CommandCode} from "../../entity/Command";
+import {Command, commandBuilder, CommandCode} from "../../entity/Command";
 import {ChildMenuScreen} from "./ChildMenuScreen";
 import "./MenuScreen.css";
 import {ScreenRow} from "./ScreenRow";
@@ -11,11 +11,23 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
     const {command, path, menuItem} = props;
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setSelectedChild(-1);
-    }, [path]);
-
     const hasBack = path.length > 1;
+
+    const handleChildMenuNavigation = (command: Command) => {
+        setSelectedChild(selectedChild => {
+            let newSelectedChild = selectedChild + (command.code === CommandCode.Right ? 1 : -1);
+
+            if (newSelectedChild > menuItem.children.length + (hasBack ? 0 : -1)) {
+                newSelectedChild = 0;
+            }
+
+            if (newSelectedChild < 0) {
+                newSelectedChild = menuItem.children.length + (hasBack ? 0 : -1);
+            }
+
+            return newSelectedChild;
+        });
+    }
 
     const handleChildMenuClick = () => {
         if (selectedChild < menuItem.children.length) {
@@ -32,6 +44,34 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
         }
     }
 
+    const handleKeyPress = (event: KeyboardEvent) => {
+        console.log(event.key);
+        switch (event.key) {
+            case "Enter":
+            case "ArrowRight":
+                handleChildMenuClick();
+                break;
+            case "ArrowUp":
+                handleChildMenuNavigation(commandBuilder(CommandCode.Left));
+                break;
+            case "ArrowDown":
+                handleChildMenuNavigation(commandBuilder(CommandCode.Right));
+                break;
+        }
+    };
+
+    useEffect(() => {
+        setSelectedChild(-1);
+    }, [path]);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [selectedChild]);
+
     useEffect(() => {
         if (!command) {
             return;
@@ -43,17 +83,7 @@ export const MenuScreen: FunctionComponent<MenuScreenProps> = props => {
                 break;
             case CommandCode.Right:
             case CommandCode.Left:
-                let newSelectedChild = selectedChild + (command.code === CommandCode.Right ? 1 : -1);
-
-                if (newSelectedChild > menuItem.children.length + (hasBack ? 0 : -1)) {
-                    newSelectedChild = 0;
-                }
-
-                if (newSelectedChild < 0) {
-                    newSelectedChild = menuItem.children.length + (hasBack ? 0 : -1);
-                }
-
-                setSelectedChild(newSelectedChild);
+                handleChildMenuNavigation(command);
                 break;
         }
     }, [command]);
