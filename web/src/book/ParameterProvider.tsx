@@ -1,17 +1,5 @@
-import {createContext, FunctionComponent, PropsWithChildren, useContext, useState} from "react";
+import {createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState} from "react";
 import {Parameter} from "../entity/Parameter";
-
-const myParameters = [
-    {name: 'temperature', uom: '° C', value: 21.2, isReadonly: true, type: 'number'},
-    {name: 'setPoint', uom: '° C', value: 22, isReadonly: false, type: 'number'},
-    {name: 'humidity', uom: '%', value: 87, isReadonly: true, type: 'number'},
-    {name: 'co2', uom: 'PPM', value: 300, isReadonly: true, type: 'number'},
-    {name: 'alarmTempMin', uom: '° C', value: 19, isReadonly: false, type: 'number'},
-    {name: 'alarmTempMax', uom: '° C', value: 24, isReadonly: false, type: 'number'},
-    {name: 'alarmTempEnabled', value: true, isReadonly: false, type: 'boolean'},
-    {name: 'alarmHumMin', uom: '%', value: 70, isReadonly: false, type: 'number'},
-    {name: 'alarmHumMax', uom: '%', value: 90, isReadonly: false, type: 'number'},
-];
 
 interface ParameterContextState {
     getParameter: (parameterName: string) => Parameter | undefined;
@@ -26,7 +14,21 @@ const ParameterContextDefaultValue: ParameterContextState = {
 const ParameterContext = createContext(ParameterContextDefaultValue);
 
 export const ParameterProvider: FunctionComponent<PropsWithChildren> = props => {
-    const [parameters, setParameters] = useState<Parameter[]>(myParameters)
+    const [parameters, setParameters] = useState<Parameter[] | undefined>(undefined)
+
+    useEffect(() => {
+        if (parameters) {
+            return;
+        }
+
+        fetch("hvac-params.json")
+            .then(response => response.json())
+            .then(response => setParameters(response));
+    }, [parameters]);
+
+    if(!parameters){
+        return <div>Loading parameters....</div>
+    }
 
     return <ParameterContext.Provider value={{
         getParameter: (parameterName: string): Parameter | undefined => parameters.find(p => p.name === parameterName),

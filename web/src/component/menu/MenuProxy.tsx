@@ -45,7 +45,7 @@ export const MenuProxy: FunctionComponent<MenuProxyProps> = props => {
     }, [hvacMenu]);
 
     if (!hvacMenu) {
-        return null;
+        return <div>Loading menu...</div>;
     }
 
     if (path.length === 0) {
